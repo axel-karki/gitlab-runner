@@ -1,0 +1,30 @@
+gitlab_instance_url: "http://10.0.0.11"
+
+# Registration token for the runner (SENSITIVE - consider using Ansible Vault!)
+# This should be stored securely, ideally using Ansible Vault
+gitlab_registration_token: "GR1348941cd1tLgWZSD_ykSbXKCvF"
+
+# Runner Configuration
+# ===================
+# Description/name for this runner (should be unique)
+gitlab_runner_name: "minimal-runner"
+
+# Executor type (shell, docker, ssh, etc.)
+gitlab_runner_executor: "shell"
+
+# Tags for this runner (list)
+gitlab_runner_tags:
+  - debian
+  - automated
+
+# Optional: Run untagged jobs
+gitlab_runner_run_untagged: false
+
+# Optional: Whether the runner should be locked to a project
+gitlab_runner_locked: false
+
+# Optional: Runner access level (not_protected, ref_protected)
+gitlab_runner_access_level: "not_protected"
+
+# Optional: Maximum job timeout in seconds
+gitlab_runner_maximum_timeout: 3600

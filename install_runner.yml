@@ -1,0 +1,71 @@
+- name: Setup and Register Gitlab Runner
+  hosts: gitlab-runner
+  become: yes
+  vars_files:
+    - vars/gitlab_runner_vars.yml
+
+  tasks:
+    # Step 1: Install dependencies
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install prerequisites for Gitlab Runner
+      apt:
+        name:
+          - curl
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+
+    # Step 2: Add Gitlab Runner repository
+    - name: Add Gitlabs official GPG key
+      apt_key:
+        url: https://packages.gitlab.com/runner/gitlab-runner/gpgkey
+        state: present
+
+    - name: Detect system architecture
+      shell: dpkg --print-architecture
+      register: system_arch
+      changed_when: false
+
+    - name: Set repository architecture
+      set_fact:
+        repo_arch: "{{ system_arch.stdout }}"
+
+    - name: Add Gitlab Runner APT repository
+      apt_repository:
+        repo: "deb https://packages.gitlab.com/runner/gitlab-runner/debian/ {{ ansible_distribution_release }} main"
+        state: present
+        filename: gitlab-runner
+
+    - name: Update apt cache after adding Gitlab repository
+      apt:
+        update_cache: yes
+
+    # Step 3: Install Gitlab Runner
+    - name: Install Gitlab Runner package
+      apt:
+        name: gitlab-runner
+        state: present
+
+    # Step 4: First register the runner manually using gitlab-runner register command
+    - name: Register GitLab Runner using command line tool
+      shell: >
+        gitlab-runner register
+        --non-interactive
+        --url "{{ gitlab_instance_url }}"
+        --registration-token "{{ gitlab_registration_token }}"
+        --description "{{ gitlab_runner_name }}"
+        --executor "{{ gitlab_runner_executor }}"
+      register: gitlab_runner_registration
+
+    # Step 5: Ensure Gitlab Runner service is enabled and running
+    - name: Ensure Gitlab Runner service is enabled
+      systemd:
+        name: gitlab-runner
+        enabled: yes
+        state: started
