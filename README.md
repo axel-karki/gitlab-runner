@@ -47,9 +47,13 @@ The runner is registered using the `gitlab-runner register` command with require
 
 This links the runner to the GitLab instance and prepares it to start accepting jobs.
 
+<img width="1179" alt="Screenshot 2025-05-26 at 8 11 40 AM" src="https://github.com/user-attachments/assets/46914daa-75d6-485c-878c-33715ff7a311" />
+
 ### Step 5: Start and Enable GitLab Runner
 
 The GitLab Runner systemd service is enabled and started to ensure it runs on system boot and is ready to process jobs.
+
+<img width="1470" alt="Screenshot 2025-05-26 at 8 16 37 AM" src="https://github.com/user-attachments/assets/f77cfe54-5f87-4f1b-b8be-857d81ed1d79" />
 
 ---
 
