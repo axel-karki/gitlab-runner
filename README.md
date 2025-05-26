@@ -102,6 +102,5 @@ Or using a password file:
 ansible-playbook playbooks/setup_gitlab_runner.yml --vault-password-file ~/.vault_pass.txt
 ```
 
----
+<img width="770" alt="Screenshot 2025-05-26 at 7 39 57 AM" src="https://github.com/user-attachments/assets/e78657e9-3102-43b3-8d07-9bcd86e9d65c" />
 
-## Future Enhancements
